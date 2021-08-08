@@ -157,6 +157,7 @@ export const MessageEditorView = ({
 
         <Row className={classes.options}>
           <Select
+            variant={"outlined"}
             value={selectedMethod}
             onChange={(event) => onMethodSelected(event.target.value as string)}
           >
