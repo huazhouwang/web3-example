@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.js": "/static/js/main.d212e560.chunk.js",
-    "main.js.map": "/static/js/main.d212e560.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.f7017c2d.js",
-    "runtime-main.js.map": "/static/js/runtime-main.f7017c2d.js.map",
-    "static/js/2.6c7068db.chunk.js": "/static/js/2.6c7068db.chunk.js",
-    "static/js/2.6c7068db.chunk.js.map": "/static/js/2.6c7068db.chunk.js.map",
-    "index.html": "/index.html",
-    "static/js/2.6c7068db.chunk.js.LICENSE.txt": "/static/js/2.6c7068db.chunk.js.LICENSE.txt"
+    "main.js": "/ethereum_utils/static/js/main.d212e560.chunk.js",
+    "main.js.map": "/ethereum_utils/static/js/main.d212e560.chunk.js.map",
+    "runtime-main.js": "/ethereum_utils/static/js/runtime-main.7da92074.js",
+    "runtime-main.js.map": "/ethereum_utils/static/js/runtime-main.7da92074.js.map",
+    "static/js/2.326baa02.chunk.js": "/ethereum_utils/static/js/2.326baa02.chunk.js",
+    "static/js/2.326baa02.chunk.js.map": "/ethereum_utils/static/js/2.326baa02.chunk.js.map",
+    "index.html": "/ethereum_utils/index.html",
+    "static/js/2.326baa02.chunk.js.LICENSE.txt": "/ethereum_utils/static/js/2.326baa02.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.f7017c2d.js",
-    "static/js/2.6c7068db.chunk.js",
+    "static/js/runtime-main.7da92074.js",
+    "static/js/2.326baa02.chunk.js",
     "static/js/main.d212e560.chunk.js"
   ]
 }
