@@ -7,6 +7,7 @@
     "static/js/2.326baa02.chunk.js": "/ethereum_utils/static/js/2.326baa02.chunk.js",
     "static/js/2.326baa02.chunk.js.map": "/ethereum_utils/static/js/2.326baa02.chunk.js.map",
     "index.html": "/ethereum_utils/index.html",
+    "/": "/ethereum_utils/index.html",
     "static/js/2.326baa02.chunk.js.LICENSE.txt": "/ethereum_utils/static/js/2.326baa02.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
