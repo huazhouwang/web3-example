@@ -2,6 +2,7 @@
   "name": "ethereum_utils",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://huazhouwang.github.io/ethereum_utils/",
   "dependencies": {
     "@ethersproject/providers": "^5.4.3",
     "@material-ui/core": "^4.12.3",
@@ -26,7 +27,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -47,12 +49,13 @@
     ]
   },
   "devDependencies": {
+    "@types/ethereumjs-util": "^5.1.1",
     "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "@types/ethereumjs-util": "^5.1.1",
     "@types/styled-components": "^5.1.12",
+    "gh-pages": "^3.2.3",
     "prettier": "^2.3.2"
   }
 }
