@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/ethereum_utils/static/js/main.b4451cc1.chunk.js",
-    "main.js.map": "/ethereum_utils/static/js/main.b4451cc1.chunk.js.map",
+    "main.js": "/ethereum_utils/static/js/main.b400fd35.chunk.js",
+    "main.js.map": "/ethereum_utils/static/js/main.b400fd35.chunk.js.map",
     "runtime-main.js": "/ethereum_utils/static/js/runtime-main.7da92074.js",
     "runtime-main.js.map": "/ethereum_utils/static/js/runtime-main.7da92074.js.map",
     "static/js/2.41a8e83f.chunk.js": "/ethereum_utils/static/js/2.41a8e83f.chunk.js",
@@ -12,6 +12,6 @@
   "entrypoints": [
     "static/js/runtime-main.7da92074.js",
     "static/js/2.41a8e83f.chunk.js",
-    "static/js/main.b4451cc1.chunk.js"
+    "static/js/main.b400fd35.chunk.js"
   ]
 }
