@@ -17,6 +17,7 @@ import {
 } from "./helper";
 import MuiAlert from "@material-ui/lab/Alert";
 import Editor from "../../components/Editor";
+import EcRecoverViewer from "../../components/EcRecoverViewer";
 
 export interface MessageViewProps {
   methodOptions: Array<string>;
@@ -199,6 +200,11 @@ export const MessageEditorView = ({
             variant="outlined"
             value={signatureValue}
             label={"Signature"}
+          />
+          <SizedBox height={10} />
+          <EcRecoverViewer
+            messageHash={messageHashValue}
+            signature={signatureValue}
           />
           <SizedBox height={10} />
           <Row className={classes.bottomButtonGroup}>
