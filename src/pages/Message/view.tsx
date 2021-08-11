@@ -16,9 +16,7 @@ import {
   toEditorJsonString,
 } from "./helper";
 import MuiAlert from "@material-ui/lab/Alert";
-import AceEditor from "react-ace";
-import "ace-builds/src-noconflict/mode-json";
-import "ace-builds/src-noconflict/theme-tomorrow_night_eighties";
+import Editor from "../../components/Editor";
 
 export interface MessageViewProps {
   methodOptions: Array<string>;
@@ -180,20 +178,11 @@ export const MessageEditorView = ({
               />
             ))}
           </Row>
-          <AceEditor
-            width={"100%"}
-            fontSize={14}
+          <Editor
             name={"message_editor"}
             placeholder={"Input Message Here"}
             mode={"json"}
             theme={"tomorrow_night_eighties"}
-            showGutter={false}
-            wrapEnabled
-            showPrintMargin
-            highlightActiveLine
-            enableBasicAutocompletion
-            enableLiveAutocompletion
-            tabSize={2}
             value={messageValue}
             onChange={onMessageChanged}
           />
