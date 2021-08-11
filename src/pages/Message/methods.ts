@@ -153,7 +153,7 @@ export const Methods: { [key: string]: MessageSignMethod } = {
     checkIsTargetMessage: easyCheckStandardEIP712Struct,
     hashMessage: async (message: string): Promise<string> =>
       ethUtil.addHexPrefix(
-        signUtil.TypedDataUtils.sign(JSON.parse(message)).toString("hex")
+        signUtil.TypedDataUtils.sign(JSON.parse(message), false).toString("hex")
       ),
     signMessage: (
       { account, library }: Web3ReactContextInterface,
