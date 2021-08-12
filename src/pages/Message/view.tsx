@@ -27,6 +27,9 @@ export interface MessageViewProps {
 }
 
 const useStyle = makeStyles((theme) => ({
+  container: {
+    padding: 0,
+  },
   options: {
     justifyContent: "flex-end",
     alignItems: "center",
@@ -115,7 +118,7 @@ export const MessageEditorView = ({
   }, [cases, onMessageChanged]);
 
   return (
-    <Column style={{ padding: 0 }}>
+    <Column className={classes.container}>
       <Typography component={"h1"} variant={"h4"} align={"center"}>
         Message
       </Typography>
