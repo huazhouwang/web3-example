@@ -4,20 +4,13 @@ import {
   makeStyles,
   MenuItem,
   Select,
-  Snackbar,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import { Column, Row, SizedBox } from "../../components/basic";
 import { useCallback, useEffect, useState } from "react";
-import {
-  easyCheckMessageHash,
-  easyCheckSignature,
-  toEditorJsonString,
-} from "./helper";
-import MuiAlert from "@material-ui/lab/Alert";
+import { easyCheckMessageHash, toEditorJsonString } from "./helper";
 import Editor from "../../components/Editor";
-import EcRecoverViewer from "../../components/EcRecoverViewer";
+import LabelText from "../../components/LabelText";
 
 export interface MessageViewProps {
   methodOptions: Array<string>;
@@ -29,7 +22,7 @@ export interface MessageViewProps {
   isWalletEnabled: boolean;
   connectedAccount?: string | null;
   connectWallet: () => void;
-  onSign: (message: string) => Promise<string>;
+  onSign: (message: string) => Promise<[string, string]>;
   preferJsonStringMessage?: boolean;
 }
 
@@ -72,8 +65,7 @@ export const MessageEditorView = ({
   const [messageHashValue, setMessageHashValue] = useState<string>("");
   const [signatureValue, setSignatureValue] = useState<string>("");
   const [disabledSignBtn, setDisabledSignBtn] = useState<boolean>(true);
-  const [snackBarState, setSnackBarState] =
-    useState<{ isOpening: boolean; isPositive?: boolean; message?: string }>();
+  const [recoveredAddress, setRecoveredAddress] = useState<string>("");
 
   const onMessageChanged = useCallback(
     async (message: string) => {
@@ -99,40 +91,15 @@ export const MessageEditorView = ({
 
       setMessageValue(message);
       setSignatureValue("");
+      setRecoveredAddress("");
     },
     [preferJsonStringMessage, checkIsTargetMessage, hashMessage]
   );
 
   const onSignButtonClick = useCallback(async () => {
-    try {
-      const signature: string = await onSign(messageValue);
-      setSignatureValue(signature);
-
-      if (signature && easyCheckSignature(signature)) {
-        setSnackBarState({
-          isOpening: true,
-          isPositive: true,
-          message: "Signed successfully",
-        });
-      } else {
-        setSnackBarState({
-          isOpening: true,
-          isPositive: false,
-          message: "Invalid signature",
-        });
-      }
-    } catch (e) {
-      console.error("Error in signing message", e);
-
-      setSnackBarState({
-        isOpening: true,
-        isPositive: false,
-        message:
-          typeof e === "object"
-            ? `Error in signing: \n${JSON.stringify(e, undefined, 2)}`
-            : "Something wrong",
-      });
-    }
+    const [signature, recoveredAddress] = await onSign(messageValue);
+    setSignatureValue(signature);
+    setRecoveredAddress(recoveredAddress);
   }, [messageValue, onSign]);
 
   const onTagClick = (index: number) => {
@@ -148,102 +115,80 @@ export const MessageEditorView = ({
   }, [cases, onMessageChanged]);
 
   return (
-    <>
-      <Column style={{ padding: 0 }}>
-        <Typography component={"h1"} variant={"h4"} align={"center"}>
-          Message
-        </Typography>
+    <Column style={{ padding: 0 }}>
+      <Typography component={"h1"} variant={"h4"} align={"center"}>
+        Message
+      </Typography>
 
-        <Row className={classes.options}>
-          <Select
-            variant={"outlined"}
-            value={selectedMethod}
-            onChange={(event) => onMethodSelected(event.target.value as string)}
-          >
-            {methodOptions.map((method) => (
-              <MenuItem key={method} value={method}>
-                {method}
-              </MenuItem>
-            ))}
-          </Select>
-        </Row>
+      <Row className={classes.options}>
+        <Select
+          variant={"outlined"}
+          value={selectedMethod}
+          onChange={(event) => onMethodSelected(event.target.value as string)}
+        >
+          {methodOptions.map((method) => (
+            <MenuItem key={method} value={method}>
+              {method}
+            </MenuItem>
+          ))}
+        </Select>
+      </Row>
 
-        <Column key={`content_of_${selectedMethod}`}>
-          <Row className={classes.caseGroup}>
-            {cases.map((tag, index) => (
-              <Chip
-                size={"small"}
-                key={tag.name}
-                label={tag.name}
-                onClick={() => onTagClick(index)}
-              />
-            ))}
-          </Row>
-          <Editor
-            name={"message_editor"}
-            placeholder={"Input Message Here"}
-            mode={"json"}
-            theme={"tomorrow_night_eighties"}
-            value={messageValue}
-            onChange={onMessageChanged}
+      <Row className={classes.caseGroup}>
+        {cases.map((tag, index) => (
+          <Chip
+            size={"small"}
+            key={tag.name}
+            label={tag.name}
+            onClick={() => onTagClick(index)}
           />
-          <SizedBox height={10} />
-          <TextField
-            id={"message_hash"}
-            variant="outlined"
-            value={messageHashValue}
-            label={"Message Hash"}
-          />
-          <SizedBox height={10} />
-          <TextField
-            id={"signature"}
-            variant="outlined"
-            value={signatureValue}
-            label={"Signature"}
-          />
-          <SizedBox height={10} />
-          <EcRecoverViewer
-            messageHash={messageHashValue}
-            signature={signatureValue}
-          />
-          <SizedBox height={10} />
-          <Row className={classes.bottomButtonGroup}>
-            <Button
-              variant={"contained"}
-              color={"primary"}
-              disabled={isWalletEnabled}
-              onClick={connectWallet}
-            >
-              {isWalletEnabled && connectedAccount
-                ? `${connectedAccount.slice(0, 4)}...${connectedAccount.slice(
-                    -4
-                  )}`
-                : "Connect"}
-            </Button>
-            <SizedBox width={16} />
-            <Button
-              variant={"contained"}
-              color={"secondary"}
-              disabled={disabledSignBtn || !isWalletEnabled}
-              onClick={onSignButtonClick}
-            >
-              SIGN
-            </Button>
-          </Row>
-        </Column>
-      </Column>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        open={snackBarState?.isOpening || false}
-        autoHideDuration={3000}
-        onClose={() =>
-          setSnackBarState((prevState) => ({ ...prevState, isOpening: false }))
-        }
-      >
-        <MuiAlert severity={snackBarState?.isPositive ? "success" : "error"}>
-          {snackBarState?.message}
-        </MuiAlert>
-      </Snackbar>
-    </>
+        ))}
+      </Row>
+      <Editor
+        name={"message_editor"}
+        placeholder={"Input Message Here"}
+        mode={"json"}
+        theme={"tomorrow_night_eighties"}
+        value={messageValue}
+        onChange={onMessageChanged}
+      />
+      <SizedBox height={10} />
+      <LabelText
+        id={"message_hash"}
+        value={messageHashValue}
+        label={"Message Hash"}
+      />
+      <SizedBox height={10} />
+      <LabelText id={"signature"} value={signatureValue} label={"Signature"} />
+      <SizedBox height={10} />
+      <LabelText
+        id={"recovered_address"}
+        value={recoveredAddress}
+        label={"Recovered Address"}
+        placeholder={"Please make sure the message and signature are correct"}
+      />
+      <SizedBox height={10} />
+      <Row className={classes.bottomButtonGroup}>
+        <Button
+          variant={"contained"}
+          color={"primary"}
+          disabled={isWalletEnabled}
+          onClick={connectWallet}
+        >
+          {isWalletEnabled && connectedAccount
+            ? `${connectedAccount.slice(0, 4)}...${connectedAccount.slice(-4)}`
+            : "Connect"}
+        </Button>
+        <SizedBox width={16} />
+        <Button
+          variant={"contained"}
+          color={"secondary"}
+          disabled={disabledSignBtn || !isWalletEnabled}
+          onClick={onSignButtonClick}
+        >
+          SIGN
+        </Button>
+      </Row>
+    </Column>
   );
 };

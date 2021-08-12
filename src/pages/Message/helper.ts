@@ -86,3 +86,18 @@ export const toEditorJsonString = (value: string): string => {
 
   return value;
 };
+
+export const stringifyProviderError = (error: any): string => {
+  const errorType = typeof error;
+  if (errorType === "undefined") {
+    return "Something wrong";
+  } else if (errorType === "string") {
+    return error;
+  } else if (errorType === "object" && typeof error.message === "string") {
+    return error.message;
+  } else if (errorType === "object" && error.data) {
+    return JSON.stringify(error.data);
+  } else {
+    return JSON.stringify(error);
+  }
+};
