@@ -11,6 +11,7 @@ import { useCallback, useEffect, useState } from "react";
 import { easyCheckMessageHash, toEditorJsonString } from "./helper";
 import Editor from "../../components/Editor";
 import LabelText from "../../components/LabelText";
+import PagePaper from "../../components/PagePaper";
 
 export interface MessageViewProps {
   methodOptions: Array<string>;
@@ -118,80 +119,88 @@ export const MessageEditorView = ({
   }, [cases, onMessageChanged]);
 
   return (
-    <Column className={classes.container}>
-      <Typography component={"h1"} variant={"h4"} align={"center"}>
-        Message
-      </Typography>
+    <PagePaper>
+      <Column className={classes.container}>
+        <Typography component={"h1"} variant={"h4"} align={"center"}>
+          Message
+        </Typography>
 
-      <Row className={classes.options}>
-        <Select
-          variant={"outlined"}
-          value={selectedMethod}
-          onChange={(event) => onMethodSelected(event.target.value as string)}
-        >
-          {methodOptions.map((method) => (
-            <MenuItem key={method} value={method}>
-              {method}
-            </MenuItem>
+        <Row className={classes.options}>
+          <Select
+            variant={"outlined"}
+            value={selectedMethod}
+            onChange={(event) => onMethodSelected(event.target.value as string)}
+          >
+            {methodOptions.map((method) => (
+              <MenuItem key={method} value={method}>
+                {method}
+              </MenuItem>
+            ))}
+          </Select>
+        </Row>
+
+        <Row className={classes.caseGroup}>
+          {cases.map((tag, index) => (
+            <Chip
+              size={"small"}
+              key={tag.name}
+              label={tag.name}
+              onClick={() => onTagClick(index)}
+            />
           ))}
-        </Select>
-      </Row>
-
-      <Row className={classes.caseGroup}>
-        {cases.map((tag, index) => (
-          <Chip
-            size={"small"}
-            key={tag.name}
-            label={tag.name}
-            onClick={() => onTagClick(index)}
-          />
-        ))}
-      </Row>
-      <Editor
-        name={"message_editor"}
-        placeholder={"Input Message Here"}
-        mode={"json"}
-        theme={"tomorrow_night_eighties"}
-        value={messageValue}
-        onChange={onMessageChanged}
-      />
-      <SizedBox height={10} />
-      <LabelText
-        id={"message_hash"}
-        value={messageHashValue}
-        label={"Message Hash"}
-      />
-      <SizedBox height={10} />
-      <LabelText id={"signature"} value={signatureValue} label={"Signature"} />
-      <SizedBox height={10} />
-      <LabelText
-        id={"recovered_address"}
-        value={recoveredAddress}
-        label={"Recovered Address"}
-        placeholder={"Please make sure the message and signature are correct"}
-      />
-      <SizedBox height={10} />
-      <Row className={classes.bottomButtonGroup}>
-        <Button
-          variant={"contained"}
-          color={"primary"}
-          disabled={isWalletEnabled}
-          onClick={connectWallet}
-        >
-          {isWalletEnabled && connectedAccount
-            ? `${connectedAccount.slice(0, 4)}...${connectedAccount.slice(-4)}`
-            : "Connect"}
-        </Button>
-        <SizedBox width={16} />
-        <Button
-          variant={"contained"}
-          color={"secondary"}
-          disabled={disabledSignBtn || !isWalletEnabled}
-          onClick={onSignButtonClick}
-        >
-          SIGN
-        </Button>
-      </Row>
-    </Column>
+        </Row>
+        <Editor
+          name={"message_editor"}
+          placeholder={"Input Message Here"}
+          mode={"json"}
+          theme={"tomorrow_night_eighties"}
+          value={messageValue}
+          onChange={onMessageChanged}
+        />
+        <SizedBox height={10} />
+        <LabelText
+          id={"message_hash"}
+          value={messageHashValue}
+          label={"Message Hash"}
+        />
+        <SizedBox height={10} />
+        <LabelText
+          id={"signature"}
+          value={signatureValue}
+          label={"Signature"}
+        />
+        <SizedBox height={10} />
+        <LabelText
+          id={"recovered_address"}
+          value={recoveredAddress}
+          label={"Recovered Address"}
+          placeholder={"Please make sure the message and signature are correct"}
+        />
+        <SizedBox height={10} />
+        <Row className={classes.bottomButtonGroup}>
+          <Button
+            variant={"contained"}
+            color={"primary"}
+            disabled={isWalletEnabled}
+            onClick={connectWallet}
+          >
+            {isWalletEnabled && connectedAccount
+              ? `${connectedAccount.slice(0, 4)}...${connectedAccount.slice(
+                  -4
+                )}`
+              : "Connect"}
+          </Button>
+          <SizedBox width={16} />
+          <Button
+            variant={"contained"}
+            color={"secondary"}
+            disabled={disabledSignBtn || !isWalletEnabled}
+            onClick={onSignButtonClick}
+          >
+            SIGN
+          </Button>
+        </Row>
+      </Column>
+    </PagePaper>
   );
 };
