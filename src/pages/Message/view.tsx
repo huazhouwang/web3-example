@@ -5,13 +5,13 @@ import {
   MenuItem,
   Select,
   Typography,
-} from "@material-ui/core";
-import { Column, Row, SizedBox } from "../../components/basic";
-import { useCallback, useEffect, useState } from "react";
-import { easyCheckMessageHash, toEditorJsonString } from "./helper";
-import Editor from "../../components/Editor";
-import LabelText from "../../components/LabelText";
-import PagePaper from "../../components/PagePaper";
+} from '@material-ui/core';
+import { Column, Row, SizedBox } from '../../components/basic';
+import { useCallback, useEffect, useState } from 'react';
+import { easyCheckMessageHash, toEditorJsonString } from './helper';
+import Editor from '../../components/Editor';
+import LabelText from '../../components/LabelText';
+import PagePaper from '../../components/PagePaper';
 
 export interface MessageViewProps {
   methodOptions: Array<string>;
@@ -32,20 +32,20 @@ const useStyle = makeStyles((theme) => ({
     padding: 0,
   },
   options: {
-    justifyContent: "flex-end",
-    alignItems: "center",
+    justifyContent: 'flex-end',
+    alignItems: 'center',
     margin: theme.spacing(3, 0, 1),
   },
   caseGroup: {
-    flexWrap: "wrap",
+    flexWrap: 'wrap',
     padding: 0,
     marginBottom: theme.spacing(1),
-    "& > *": {
+    '& > *': {
       margin: theme.spacing(0.5),
     },
   },
   bottomButtonGroup: {
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
     padding: 0,
   },
 }));
@@ -65,11 +65,11 @@ export const MessageEditorView = ({
 }: MessageViewProps) => {
   const classes = useStyle();
 
-  const [messageValue, setMessageValue] = useState<string>("");
-  const [messageHashValue, setMessageHashValue] = useState<string>("");
-  const [signatureValue, setSignatureValue] = useState<string>("");
+  const [messageValue, setMessageValue] = useState<string>('');
+  const [messageHashValue, setMessageHashValue] = useState<string>('');
+  const [signatureValue, setSignatureValue] = useState<string>('');
   const [disabledSignBtn, setDisabledSignBtn] = useState<boolean>(true);
-  const [recoveredAddress, setRecoveredAddress] = useState<string>("");
+  const [recoveredAddress, setRecoveredAddress] = useState<string>('');
 
   const onMessageChanged = useCallback(
     async (message: string) => {
@@ -90,14 +90,14 @@ export const MessageEditorView = ({
         }
       } catch (e) {
         setDisabledSignBtn(true);
-        console.error("Error in hashing message", e);
+        console.error('Error in hashing message', e);
       }
 
       setMessageValue(message);
-      setSignatureValue("");
-      setRecoveredAddress("");
+      setSignatureValue('');
+      setRecoveredAddress('');
     },
-    [preferJsonStringMessage, checkIsTargetMessage, hashMessage]
+    [preferJsonStringMessage, checkIsTargetMessage, hashMessage],
   );
 
   const onSignButtonClick = useCallback(async () => {
@@ -121,13 +121,13 @@ export const MessageEditorView = ({
   return (
     <PagePaper>
       <Column className={classes.container}>
-        <Typography component={"h1"} variant={"h4"} align={"center"}>
+        <Typography component={'h1'} variant={'h4'} align={'center'}>
           Message
         </Typography>
 
         <Row className={classes.options}>
           <Select
-            variant={"outlined"}
+            variant={'outlined'}
             value={selectedMethod}
             onChange={(event) => onMethodSelected(event.target.value as string)}
           >
@@ -142,7 +142,7 @@ export const MessageEditorView = ({
         <Row className={classes.caseGroup}>
           {cases.map((tag, index) => (
             <Chip
-              size={"small"}
+              size={'small'}
               key={tag.name}
               label={tag.name}
               onClick={() => onTagClick(index)}
@@ -150,50 +150,50 @@ export const MessageEditorView = ({
           ))}
         </Row>
         <Editor
-          name={"message_editor"}
-          placeholder={"Input Message Here"}
-          mode={"json"}
-          theme={"tomorrow_night_eighties"}
+          name={'message_editor'}
+          placeholder={'Input Message Here'}
+          mode={'json'}
+          theme={'tomorrow_night_eighties'}
           value={messageValue}
           onChange={onMessageChanged}
         />
         <SizedBox height={10} />
         <LabelText
-          id={"message_hash"}
+          id={'message_hash'}
           value={messageHashValue}
-          label={"Message Hash"}
+          label={'Message Hash'}
         />
         <SizedBox height={10} />
         <LabelText
-          id={"signature"}
+          id={'signature'}
           value={signatureValue}
-          label={"Signature"}
+          label={'Signature'}
         />
         <SizedBox height={10} />
         <LabelText
-          id={"recovered_address"}
+          id={'recovered_address'}
           value={recoveredAddress}
-          label={"Recovered Address"}
-          placeholder={"Please make sure the message and signature are correct"}
+          label={'Recovered Address'}
+          placeholder={'Please make sure the message and signature are correct'}
         />
         <SizedBox height={10} />
         <Row className={classes.bottomButtonGroup}>
           <Button
-            variant={"contained"}
-            color={"primary"}
+            variant={'contained'}
+            color={'primary'}
             disabled={isWalletEnabled}
             onClick={connectWallet}
           >
             {isWalletEnabled && connectedAccount
               ? `${connectedAccount.slice(0, 4)}...${connectedAccount.slice(
-                  -4
+                  -4,
                 )}`
-              : "Connect"}
+              : 'Connect'}
           </Button>
           <SizedBox width={16} />
           <Button
-            variant={"contained"}
-            color={"secondary"}
+            variant={'contained'}
+            color={'secondary'}
             disabled={disabledSignBtn || !isWalletEnabled}
             onClick={onSignButtonClick}
           >

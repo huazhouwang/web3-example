@@ -1,5 +1,5 @@
-import { makeStyles, Paper } from "@material-ui/core";
-import { PaperProps } from "@material-ui/core/Paper/Paper";
+import { makeStyles, Paper } from '@material-ui/core';
+import { PaperProps } from '@material-ui/core/Paper/Paper';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -8,8 +8,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     [theme.breakpoints.up(800 + theme.spacing(2) * 2)]: {
       width: 800,
-      marginLeft: "auto",
-      marginRight: "auto",
+      marginLeft: 'auto',
+      marginRight: 'auto',
     },
   },
 }));

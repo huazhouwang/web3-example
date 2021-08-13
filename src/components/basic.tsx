@@ -1,20 +1,20 @@
-import { styled } from "@material-ui/core";
+import { styled } from '@material-ui/core';
 
-const Flex = styled("div")({
-  display: "flex",
+const Flex = styled('div')({
+  display: 'flex',
 });
 
 const Column = styled(Flex)({
-  flexDirection: "column",
+  flexDirection: 'column',
 });
 
 const Row = styled(Flex)({
-  flexDirection: "row",
+  flexDirection: 'row',
 });
 
 const Center = styled(Flex)({
-  justifyItems: "center",
-  alignItems: "center",
+  justifyItems: 'center',
+  alignItems: 'center',
 });
 
 const SizedBox = ({ width, height }: { width?: any; height?: any }) => (

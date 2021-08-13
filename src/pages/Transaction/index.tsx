@@ -1,4 +1,4 @@
-import TransactionView from "./view";
+import TransactionView from './view';
 
 const Transaction = () => <TransactionView />;
 

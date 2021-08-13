@@ -5,29 +5,29 @@ import {
   makeStyles,
   Toolbar,
   Typography,
-} from "@material-ui/core";
-import React, { useState } from "react";
-import MenuIcon from "@material-ui/icons/Menu";
-import PagesDrawer from "./components/PagesDrawer";
+} from '@material-ui/core';
+import React, { useState } from 'react';
+import MenuIcon from '@material-ui/icons/Menu';
+import PagesDrawer from './components/PagesDrawer';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
-    color: "default",
-    position: "relative",
+    color: 'default',
+    position: 'relative',
   },
   main: {
-    width: "auto",
+    width: 'auto',
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
   },
 }));
 
-const DRAWER_MENU = ["Message", "Transaction"];
-const DEFAULT_PAGE = "Message";
+const DRAWER_MENU = ['Message', 'Transaction'];
+const DEFAULT_PAGE = 'Message';
 
 const Pagers: { [key: string]: React.FC } = {
-  Message: () => require("./pages/Message/index").default,
-  Transaction: () => require("./pages/Transaction/index").default,
+  Message: () => require('./pages/Message/index').default,
+  Transaction: () => require('./pages/Transaction/index').default,
 };
 
 const MyAppBar = ({ onDrawerBtnClick }: { onDrawerBtnClick: VoidFunction }) => {
@@ -37,14 +37,14 @@ const MyAppBar = ({ onDrawerBtnClick }: { onDrawerBtnClick: VoidFunction }) => {
     <AppBar className={classes.appBar}>
       <Toolbar>
         <IconButton
-          color={"inherit"}
-          aria-label={"open drawer"}
+          color={'inherit'}
+          aria-label={'open drawer'}
           onClick={onDrawerBtnClick}
-          edge={"start"}
+          edge={'start'}
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant={"h6"} color={"inherit"} noWrap>
+        <Typography variant={'h6'} color={'inherit'} noWrap>
           Ethereum Utils
         </Typography>
       </Toolbar>

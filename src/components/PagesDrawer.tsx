@@ -6,10 +6,10 @@ import {
   makeStyles,
   useMediaQuery,
   useTheme,
-} from "@material-ui/core";
-import React, { useMemo } from "react";
-import { SizedBox } from "./basic";
-import { DrawerProps } from "@material-ui/core/Drawer/Drawer";
+} from '@material-ui/core';
+import React, { useMemo } from 'react';
+import { SizedBox } from './basic';
+import { DrawerProps } from '@material-ui/core/Drawer/Drawer';
 
 const DRAWER_WIDTH = 240;
 const useStyle = makeStyles((theme) => ({
@@ -20,12 +20,12 @@ const useStyle = makeStyles((theme) => ({
     height: 300,
   },
   drawerHeader: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
   menuItem: {
     height: theme.spacing(8),
@@ -45,16 +45,16 @@ const PagesDrawer = ({
 }) => {
   const classes = useStyle();
   const theme = useTheme();
-  const isXsSize = useMediaQuery(theme.breakpoints.down("xs"));
+  const isXsSize = useMediaQuery(theme.breakpoints.down('xs'));
 
   const drawerProps = useMemo<DrawerProps>(() => {
     if (isXsSize) {
       return {
-        anchor: "bottom",
+        anchor: 'bottom',
       };
     } else {
       return {
-        anchor: "left",
+        anchor: 'left',
         className: classes.drawer,
         classes: { paper: classes.drawerPaper },
       };

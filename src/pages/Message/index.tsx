@@ -1,12 +1,12 @@
-import { MessageEditorView } from "./view";
-import { useCallback, useState } from "react";
-import { useWeb3React } from "@web3-react/core";
-import { MessageSignMethod, Methods } from "./methods";
-import { injected } from "../../connector";
-import { Snackbar } from "@material-ui/core";
-import MuiAlert from "@material-ui/lab/Alert";
-import { easyCheckSignature, stringifyProviderError } from "./helper";
-import * as ethUtil from "ethereumjs-util";
+import { MessageEditorView } from './view';
+import { useCallback, useState } from 'react';
+import { useWeb3React } from '@web3-react/core';
+import { MessageSignMethod, Methods } from './methods';
+import { injected } from '../../connector';
+import { Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
+import { easyCheckSignature, stringifyProviderError } from './helper';
+import * as ethUtil from 'ethereumjs-util';
 
 const recoverAddress = (messageHash: string, signature: string): string => {
   const hashBuffer = ethUtil.toBuffer(messageHash);
@@ -14,7 +14,7 @@ const recoverAddress = (messageHash: string, signature: string): string => {
 
   console.assert(
     hashBuffer.length === 32,
-    `Invalid message hash: ${messageHash}`
+    `Invalid message hash: ${messageHash}`,
   );
   console.assert(sigBuffer.length === 65, `Invalid signature: ${signature}`);
 
@@ -24,52 +24,52 @@ const recoverAddress = (messageHash: string, signature: string): string => {
     sigBuffer[64],
   ];
   const public_key = ethUtil.ecrecover(hashBuffer, v, r, s);
-  return ethUtil.addHexPrefix(ethUtil.pubToAddress(public_key).toString("hex"));
+  return ethUtil.addHexPrefix(ethUtil.pubToAddress(public_key).toString('hex'));
 };
 
 const MessageEditor = () => {
   const web3 = useWeb3React();
   const { active, activate, account } = web3;
-  const [selectedMethod, setSelectedMethod] = useState<string>("eth_sign");
+  const [selectedMethod, setSelectedMethod] = useState<string>('eth_sign');
   const [snackBarState, setSnackBarState] =
     useState<{ isOpening: boolean; isPositive?: boolean; message?: string }>();
 
-  const method: MessageSignMethod = Methods[selectedMethod || "eth_sign"];
+  const method: MessageSignMethod = Methods[selectedMethod || 'eth_sign'];
   const onSign = useCallback(
     async (message: string): Promise<[string, string]> => {
       console.assert(!!account);
       let snackBarState: { isPositive: boolean; message: string } | undefined =
         undefined;
-      let signature = "";
-      let recoveredAddress = "";
+      let signature = '';
+      let recoveredAddress = '';
 
       try {
         signature = await method.signMessage(web3, message);
         if (signature && easyCheckSignature(signature)) {
           recoveredAddress = recoverAddress(
             await method.hashMessage(message),
-            signature
+            signature,
           );
 
           if (recoveredAddress.toLowerCase() === account?.toLowerCase()) {
             snackBarState = {
               isPositive: true,
-              message: "Signature Verified",
+              message: 'Signature Verified',
             };
           } else {
             snackBarState = {
               isPositive: false,
-              message: "Sorry! The Message Signature Verification Failed",
+              message: 'Sorry! The Message Signature Verification Failed',
             };
           }
         } else {
           snackBarState = {
             isPositive: false,
-            message: "Invalid signature",
+            message: 'Invalid signature',
           };
         }
       } catch (e) {
-        console.error("Error in signing message", e);
+        console.error('Error in signing message', e);
 
         snackBarState = {
           isPositive: false,
@@ -83,7 +83,7 @@ const MessageEditor = () => {
 
       return [signature, recoveredAddress];
     },
-    [web3, account, method]
+    [web3, account, method],
   );
 
   return (
@@ -102,14 +102,14 @@ const MessageEditor = () => {
         onSign={onSign}
       />
       <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={snackBarState?.isOpening || false}
         autoHideDuration={3000}
         onClose={() =>
           setSnackBarState((prevState) => ({ ...prevState, isOpening: false }))
         }
       >
-        <MuiAlert severity={snackBarState?.isPositive ? "success" : "error"}>
+        <MuiAlert severity={snackBarState?.isPositive ? 'success' : 'error'}>
           {snackBarState?.message}
         </MuiAlert>
       </Snackbar>

@@ -1,6 +1,6 @@
-import { Column, SizedBox } from "../../components/basic";
-import { makeStyles, Typography } from "@material-ui/core";
-import PagePaper from "../../components/PagePaper";
+import { Column, SizedBox } from '../../components/basic';
+import { makeStyles, Typography } from '@material-ui/core';
+import PagePaper from '../../components/PagePaper';
 
 const useStyle = makeStyles((theme) => ({
   container: {
@@ -14,12 +14,12 @@ const TransactionView = () => {
   return (
     <PagePaper>
       <Column className={classes.container}>
-        <Typography component={"h1"} variant={"h4"} align={"center"}>
+        <Typography component={'h1'} variant={'h4'} align={'center'}>
           Transaction
         </Typography>
         <SizedBox height={32} />
 
-        <Typography component={"h5"} align={"center"} color={"textSecondary"}>
+        <Typography component={'h5'} align={'center'} color={'textSecondary'}>
           Developing...
         </Typography>
       </Column>
