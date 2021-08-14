@@ -8,10 +8,11 @@ import {
 } from '@material-ui/core';
 import { Column, Row, SizedBox } from '../../components/basic';
 import { useCallback, useEffect, useState } from 'react';
-import { easyCheckMessageHash, toEditorJsonString } from './helper';
+import { easyCheckMessageHash } from './helper';
 import Editor from '../../components/Editor';
 import LabelText from '../../components/LabelText';
 import PagePaper from '../../components/PagePaper';
+import { prettify } from '../../utils';
 
 export interface MessageViewProps {
   methodOptions: Array<string>;
@@ -64,22 +65,47 @@ export const MessageEditorView = ({
   preferJsonStringMessage,
 }: MessageViewProps) => {
   const classes = useStyle();
-
   const [messageValue, setMessageValue] = useState<string>('');
   const [messageHashValue, setMessageHashValue] = useState<string>('');
   const [signatureValue, setSignatureValue] = useState<string>('');
   const [disabledSignBtn, setDisabledSignBtn] = useState<boolean>(true);
   const [recoveredAddress, setRecoveredAddress] = useState<string>('');
 
-  const onMessageChanged = useCallback(
-    async (message: string) => {
+  const setMessageValueWrapper = useCallback(
+    (message: string) => {
+      const formattedMessage = prettify(
+        message,
+        preferJsonStringMessage ? 'json' : 'text',
+      );
+
+      setMessageValue(formattedMessage);
+    },
+    [preferJsonStringMessage],
+  );
+
+  const onSignButtonClick = useCallback(async () => {
+    const [signature, recoveredAddress] = await onSign(messageValue);
+    setSignatureValue(signature);
+    setRecoveredAddress(recoveredAddress);
+  }, [messageValue, onSign]);
+
+  const onTagClick = (index: number) => {
+    const message = cases[index].value;
+    setMessageValueWrapper(message);
+  };
+
+  useEffect(() => {
+    if (cases[0].value) {
+      setMessageValueWrapper(cases[0].value);
+    }
+  }, [cases, setMessageValueWrapper]);
+
+  useEffect(() => {
+    const hashIt = async () => {
       try {
+        let message = messageValue;
         if (message && checkIsTargetMessage(message)) {
           const messageHash: string = await hashMessage(message);
-
-          message = preferJsonStringMessage
-            ? toEditorJsonString(message)
-            : message;
 
           if (easyCheckMessageHash(messageHash)) {
             setMessageHashValue(messageHash);
@@ -93,30 +119,12 @@ export const MessageEditorView = ({
         console.error('Error in hashing message', e);
       }
 
-      setMessageValue(message);
       setSignatureValue('');
       setRecoveredAddress('');
-    },
-    [preferJsonStringMessage, checkIsTargetMessage, hashMessage],
-  );
+    };
 
-  const onSignButtonClick = useCallback(async () => {
-    const [signature, recoveredAddress] = await onSign(messageValue);
-    setSignatureValue(signature);
-    setRecoveredAddress(recoveredAddress);
-  }, [messageValue, onSign]);
-
-  const onTagClick = (index: number) => {
-    const message = cases[index].value;
-    setMessageValue(message);
-    onMessageChanged(message).catch(console.error);
-  };
-
-  useEffect(() => {
-    if (cases[0].value) {
-      onMessageChanged(cases[0].value);
-    }
-  }, [cases, onMessageChanged]);
+    hashIt().catch(console.error);
+  }, [checkIsTargetMessage, hashMessage, messageValue]);
 
   return (
     <PagePaper>
@@ -155,7 +163,7 @@ export const MessageEditorView = ({
           mode={'json'}
           theme={'tomorrow_night_eighties'}
           value={messageValue}
-          onChange={onMessageChanged}
+          onChange={setMessageValueWrapper}
         />
         <SizedBox height={10} />
         <LabelText

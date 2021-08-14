@@ -45,10 +45,10 @@ const PagesDrawer = ({
 }) => {
   const classes = useStyle();
   const theme = useTheme();
-  const isXsSize = useMediaQuery(theme.breakpoints.down('xs'));
+  const isDown800 = useMediaQuery(theme.breakpoints.down(800));
 
   const drawerProps = useMemo<DrawerProps>(() => {
-    if (isXsSize) {
+    if (isDown800) {
       return {
         anchor: 'bottom',
       };
@@ -59,7 +59,7 @@ const PagesDrawer = ({
         classes: { paper: classes.drawerPaper },
       };
     }
-  }, [classes, isXsSize]);
+  }, [classes, isDown800]);
 
   return (
     <Drawer open={open} onClose={onClose} {...drawerProps}>
@@ -69,13 +69,13 @@ const PagesDrawer = ({
           button
           key={text}
           onClick={() => onDrawerItemClick(text, index)}
-          divider={!isXsSize}
+          divider={!isDown800}
         >
           <ListItemText primary={text} />
         </ListItem>
       ))}
 
-      {isXsSize && <Divider />}
+      {isDown800 && <Divider />}
       <SizedBox height={theme.spacing(6)} />
     </Drawer>
   );

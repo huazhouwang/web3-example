@@ -76,17 +76,6 @@ export const easyCheckStandardEIP712Struct = (value: string | undefined) => {
   return false;
 };
 
-export const toEditorJsonString = (value: string): string => {
-  if (value) {
-    try {
-      const data = JSON.parse(value);
-      return JSON.stringify(data, undefined, 2);
-    } catch (e) {}
-  }
-
-  return value;
-};
-
 export const stringifyProviderError = (error: any): string => {
   const errorType = typeof error;
   if (errorType === 'undefined') {
