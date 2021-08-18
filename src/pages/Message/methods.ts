@@ -51,7 +51,7 @@ export const Methods: { [key: string]: MessageSignMethod } = {
       library
         .getSigner(account)
         .provider.provider.send('eth_sign', [account, message])
-        .then((response: any) => response.result),
+        .then((response: any) => response?.result || response),
   },
   personal_sign: {
     name: 'personal_sign',
@@ -72,7 +72,7 @@ export const Methods: { [key: string]: MessageSignMethod } = {
       library
         .getSigner(account)
         .provider.send('personal_sign', [account, message])
-        .then((response: any) => response.result),
+        .then((response: any) => response?.result || response),
   },
   typed_data_sign: {
     name: 'typed_data_sign',
@@ -106,7 +106,7 @@ export const Methods: { [key: string]: MessageSignMethod } = {
             ? [JSON.parse(message), account]
             : [account, message],
         )
-        .then((response: any) => response.result),
+        .then((response: any) => response?.result || response),
   },
   typed_data_sign_v1: {
     name: 'typed_data_sign_v1',
@@ -135,7 +135,7 @@ export const Methods: { [key: string]: MessageSignMethod } = {
     ): Promise<string> =>
       library.provider
         .send('eth_signTypedData_v1', [account, message])
-        .then((response: any) => response.result),
+        .then((response: any) => response?.result || response),
   },
   typed_data_sign_v3: {
     name: 'typed_data_sign_v3',
@@ -167,7 +167,7 @@ export const Methods: { [key: string]: MessageSignMethod } = {
     ): Promise<string> =>
       library.provider
         .send('eth_signTypedData_v3', [account, message])
-        .then((response: any) => response.result),
+        .then((response: any) => response?.result || response),
   },
   typed_data_sign_v4: {
     name: 'typed_data_sign_v4',
@@ -207,6 +207,6 @@ export const Methods: { [key: string]: MessageSignMethod } = {
     ): Promise<string> =>
       library.provider
         .send('eth_signTypedData_v4', [account, message])
-        .then((response: any) => response.result),
+        .then((response: any) => response?.result || response),
   },
 };
