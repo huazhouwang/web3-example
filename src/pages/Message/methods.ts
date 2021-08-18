@@ -68,7 +68,11 @@ export const Methods: { [key: string]: MessageSignMethod } = {
     signMessage: (
       { account, library }: Web3ReactContextInterface,
       message: string,
-    ): Promise<string> => library.getSigner(account).signMessage(message),
+    ): Promise<string> =>
+      library
+        .getSigner(account)
+        .provider.send('personal_sign', [account, message])
+        .then((response: any) => response.result),
   },
   typed_data_sign: {
     name: 'typed_data_sign',
