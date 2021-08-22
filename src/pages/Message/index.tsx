@@ -2,11 +2,11 @@ import { MessageEditorView } from './view';
 import { useCallback, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { MessageSignMethod, Methods } from './methods';
-import { injected } from '../../connector';
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { easyCheckSignature, stringifyProviderError } from './helper';
 import * as ethUtil from 'ethereumjs-util';
+import { useInjectedWeb3Activate } from '../../hooks';
 
 const recoverAddress = (messageHash: string, signature: string): string => {
   const hashBuffer = ethUtil.toBuffer(messageHash);
@@ -29,10 +29,14 @@ const recoverAddress = (messageHash: string, signature: string): string => {
 
 const MessageEditor = () => {
   const web3 = useWeb3React();
-  const { active, activate, account } = web3;
+  const { active, account } = web3;
+  const [, doActivateInjected] = useInjectedWeb3Activate();
   const [selectedMethod, setSelectedMethod] = useState<string>('eth_sign');
-  const [snackBarState, setSnackBarState] =
-    useState<{ isOpening: boolean; isPositive?: boolean; message?: string }>();
+  const [snackBarState, setSnackBarState] = useState<{
+    isOpening: boolean;
+    isPositive?: boolean;
+    message?: string;
+  }>();
 
   const method: MessageSignMethod = Methods[selectedMethod || 'eth_sign'];
   const onSign = useCallback(
@@ -91,7 +95,7 @@ const MessageEditor = () => {
       <MessageEditorView
         isWalletEnabled={active}
         connectedAccount={account}
-        connectWallet={() => activate(injected)}
+        connectWallet={doActivateInjected}
         methodOptions={Object.keys(Methods)}
         selectedMethod={selectedMethod}
         onMethodSelected={setSelectedMethod}
@@ -106,7 +110,10 @@ const MessageEditor = () => {
         open={snackBarState?.isOpening || false}
         autoHideDuration={3000}
         onClose={() =>
-          setSnackBarState((prevState) => ({ ...prevState, isOpening: false }))
+          setSnackBarState((prevState) => ({
+            ...prevState,
+            isOpening: false,
+          }))
         }
       >
         <MuiAlert severity={snackBarState?.isPositive ? 'success' : 'error'}>

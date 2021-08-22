@@ -1,13 +1,20 @@
-export const prettify = (value: string, format: string): string => {
-  format = format.toLowerCase();
-
-  try {
-    if (format === 'json') {
-      return JSON.stringify(JSON.parse(value), undefined, 2);
+export const prettify = (
+  value: string | object,
+  format: 'json' | 'text',
+): string => {
+  if (format === 'json') {
+    if (typeof value === 'string') {
+      value = JSON.parse(value);
     }
-  } catch {
-    // ignored
-  }
 
-  return value;
+    return JSON.stringify(value, undefined, 2);
+  } else if (format === 'text') {
+    if (typeof value === 'object') {
+      value = JSON.stringify(value);
+    }
+
+    return value;
+  } else {
+    throw Error(`Invalid format: ${format}, value: ${value}`);
+  }
 };
