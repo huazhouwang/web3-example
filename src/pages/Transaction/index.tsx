@@ -5,6 +5,7 @@ import {
   serializeTransaction,
   deserializeTransaction,
   ExplorerUrlsForTx,
+  DEFAULT_TX_EXPLORER,
 } from './helper';
 import { addHexPrefix } from 'ethereumjs-util';
 import { useInjectedWeb3Activate } from '../../hooks';
@@ -62,10 +63,9 @@ const renderActionBtnState = async (
           children: 'Transaction Found!',
           onClick: () =>
             window.open(
-              (ExplorerUrlsForTx[chainId as number] || '{0}').replace(
-                '{0}',
-                txid as string,
-              ),
+              (
+                ExplorerUrlsForTx[chainId as number] || DEFAULT_TX_EXPLORER
+              ).replace('{0}', txid as string),
             ),
         };
       }

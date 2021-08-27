@@ -131,3 +131,5 @@ export const ExplorerUrlsForTx: { [key: number]: string } = {
   128: 'https://hecoinfo.com/tx/{0}',
   256: 'https://testnet.hecoinfo.com/{0}',
 };
+
+export const DEFAULT_TX_EXPLORER = 'https://blockscan.com/tx/{0}';
