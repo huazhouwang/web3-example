@@ -2,8 +2,7 @@ import DiscussionView from './view';
 import { normalizeRecord, Record, useOpenBoardContract } from './helper';
 import { OpenBoard } from '../../types/contracts';
 import { useCallback, useEffect, useState } from 'react';
-import { useInjectedWeb3Activate } from '../../hooks';
-import { useWeb3React } from '@web3-react/core';
+import { useActiveWeb3React, useWeb3ReactActivate } from '../../hooks';
 
 const MAX_CAPACITY = 100;
 
@@ -32,8 +31,8 @@ const loadHistoricalRecords = async (
 };
 
 const Discussion = () => {
-  const { account } = useWeb3React();
-  const [isAutoConnectWallet, doActivateInjected] = useInjectedWeb3Activate();
+  const { account } = useActiveWeb3React();
+  const activateInjectedWeb3 = useWeb3ReactActivate();
   const contract: OpenBoard | undefined = useOpenBoardContract();
   const [records, setRecords] = useState<Array<Record>>([]);
   const [messageValue, setMessageValue] = useState<string>('');
@@ -77,7 +76,7 @@ const Discussion = () => {
     <DiscussionView
       records={records}
       account={typeof account === 'string' ? account : ''}
-      connectWallet={doActivateInjected}
+      connectWallet={activateInjectedWeb3}
       messageValue={messageValue}
       onMessageValueChange={setMessageValue}
       submitMessage={submitMessage}

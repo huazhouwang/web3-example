@@ -1,12 +1,11 @@
 import { MessageEditorView } from './view';
 import { useCallback, useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
 import { MessageSignMethod, Methods } from './methods';
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { easyCheckSignature, stringifyProviderError } from './helper';
 import * as ethUtil from 'ethereumjs-util';
-import { useInjectedWeb3Activate } from '../../hooks';
+import { useInjectedWeb3React, useWeb3ReactActivate } from '../../hooks';
 
 const recoverAddress = (messageHash: string, signature: string): string => {
   const hashBuffer = ethUtil.toBuffer(messageHash);
@@ -28,9 +27,9 @@ const recoverAddress = (messageHash: string, signature: string): string => {
 };
 
 const MessageEditor = () => {
-  const web3 = useWeb3React();
+  const web3 = useInjectedWeb3React();
   const { active, account } = web3;
-  const [, doActivateInjected] = useInjectedWeb3Activate();
+  const activateInjectedWeb3 = useWeb3ReactActivate();
   const [selectedMethod, setSelectedMethod] = useState<string>('eth_sign');
   const [snackBarState, setSnackBarState] = useState<{
     isOpening: boolean;
@@ -95,7 +94,7 @@ const MessageEditor = () => {
       <MessageEditorView
         isWalletEnabled={active}
         connectedAccount={account}
-        connectWallet={doActivateInjected}
+        connectWallet={activateInjectedWeb3}
         methodOptions={Object.keys(Methods)}
         selectedMethod={selectedMethod}
         onMethodSelected={setSelectedMethod}

@@ -2,15 +2,17 @@ import TransactionView, { ActionBtnState } from './view';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { prettify } from '../../utils';
 import {
-  serializeTransaction,
+  DEFAULT_TX_EXPLORER,
   deserializeTransaction,
   ExplorerUrlsForTx,
-  DEFAULT_TX_EXPLORER,
+  serializeTransaction,
 } from './helper';
 import { addHexPrefix } from 'ethereumjs-util';
-import { useInjectedWeb3Activate } from '../../hooks';
-import { useWeb3React } from '@web3-react/core';
-import { createBackupProvider } from '../../connector';
+import {
+  useBackupWeb3React,
+  useInjectedWeb3React,
+  useWeb3ReactActivate,
+} from '../../hooks';
 import {
   JsonRpcProvider,
   Network,
@@ -104,6 +106,11 @@ const renderActionBtnState = async (
 };
 
 const Transaction = () => {
+  const { active: isWalletInjected, library: injectedProvider } =
+    useInjectedWeb3React();
+  const { library: backupProvider } = useBackupWeb3React();
+  const activateInjectedWeb3 = useWeb3ReactActivate();
+
   const [jsonTransactionValue, setJsonTransactionValue] = useState<string>('');
   const [jsonTransactionHelperText, setJsonTransactionHelperText] = useState<
     string | undefined
@@ -115,19 +122,17 @@ const Transaction = () => {
   const [txSnapshot, setTxSnapshot] = useState<undefined | TxSnapshot>();
 
   const [nodeSelectedIndex, setNodeSelectedIndex] = useState<number>(0);
-  const { active: isWalletInjected, library: injectedProvider } =
-    useWeb3React();
-  const [isAutoConnectWallet, doActivateInjected] = useInjectedWeb3Activate();
   const [customNodeValue, setCustomNodeValue] = useState<string>('');
+
   const provider = useMemo((): any | undefined => {
     if (nodeSelectedIndex === 0) {
-      return createBackupProvider();
+      return backupProvider;
     } else if (nodeSelectedIndex === 1) {
       return injectedProvider;
     } else if (nodeSelectedIndex === 2 && isValidUrl(customNodeValue)) {
       return new JsonRpcProvider({ url: customNodeValue });
     }
-  }, [nodeSelectedIndex, injectedProvider, customNodeValue]);
+  }, [nodeSelectedIndex, injectedProvider, backupProvider, customNodeValue]);
 
   const [actionBtnState, setActionBtnState] = useState<ActionBtnState>(
     DEFAULT_ACTION_BTN_STATE,
@@ -162,7 +167,9 @@ const Transaction = () => {
       txid,
       chainId: jsonTransaction.chainId,
       signed: Boolean(
-        jsonTransaction.r && jsonTransaction.s && jsonTransaction.v,
+        jsonTransaction.r &&
+          jsonTransaction.s &&
+          typeof jsonTransaction.v === 'number',
       ),
       sender: senderAddress,
       payload: jsonTransaction,
@@ -232,10 +239,10 @@ const Transaction = () => {
   }, [provider, txSnapshot, onTransactionEditorChange]);
 
   useEffect(() => {
-    if (isAutoConnectWallet) {
+    if (injectedProvider) {
       setNodeSelectedIndex(1);
     }
-  }, [isAutoConnectWallet]);
+  }, [injectedProvider]);
 
   return (
     <TransactionView
@@ -250,7 +257,7 @@ const Transaction = () => {
       nodeSelectedIndex={nodeSelectedIndex}
       onNodeSelect={setNodeSelectedIndex}
       isWalletInjected={isWalletInjected}
-      injectWallet={doActivateInjected}
+      injectWallet={activateInjectedWeb3}
       customNodeValue={customNodeValue}
       onCustomNodeValueChange={setCustomNodeValue}
       actionBtnState={actionBtnState}
