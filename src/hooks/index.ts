@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { injectedNetwork } from '../connector';
 
 export const useInjectedWeb3Activate = (): [boolean, () => void] => {
@@ -23,4 +23,20 @@ export const useInjectedWeb3Activate = (): [boolean, () => void] => {
   }, [inject]);
 
   return [isAutoConnect, inject];
+};
+
+export const useContract = (
+  address: string,
+  contract_factory_class: any,
+): object | undefined => {
+  const { library, account } = useWeb3React();
+
+  return useMemo((): object | undefined => {
+    if (address && library) {
+      return contract_factory_class.connect(
+        address,
+        typeof account === 'string' ? library.getSigner(account) : library,
+      );
+    }
+  }, [address, contract_factory_class, library, account]);
 };

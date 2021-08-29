@@ -56,7 +56,6 @@ const renderActionBtnState = async (
       };
     } else if (txid) {
       const tx = await provider.send('eth_getTransactionByHash', [txid]);
-      console.log('fetch tx: ', tx);
       if (typeof tx === 'object' && tx !== null && tx.hash === txid) {
         btnState = {
           disabled: false,
@@ -138,7 +137,6 @@ const Transaction = () => {
     value: string,
     source: 'json_tx' | 'raw_tx',
   ) => {
-    console.log('updateTransaction: ', value);
     let rawTransaction: string | undefined;
 
     if (source === 'raw_tx') {
@@ -212,7 +210,6 @@ const Transaction = () => {
   useEffect(() => {
     let cancelled: boolean = false;
 
-    console.log('useEffect: ', provider, txSnapshot);
     if (typeof provider !== 'undefined' && typeof txSnapshot !== 'undefined') {
       setActionBtnState({
         disabled: false,

@@ -22,13 +22,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DRAWER_MENU = ['Message', 'Transaction'];
-const DEFAULT_PAGE = 'Message';
-
 const Pagers: { [key: string]: React.FC } = {
   Message: () => require('./pages/Message/index').default,
   Transaction: () => require('./pages/Transaction/index').default,
+  Discussion: () => require('./pages/Discussion/index').default,
 };
+const DRAWER_MENU = Object.keys(Pagers);
+const DEFAULT_PAGE = DRAWER_MENU[0];
 
 const MyAppBar = ({ onDrawerBtnClick }: { onDrawerBtnClick: VoidFunction }) => {
   const classes = useStyles();

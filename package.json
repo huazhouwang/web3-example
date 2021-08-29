@@ -8,11 +8,14 @@
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
+    "@metamask/jazzicon": "^2.0.0",
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
     "ace-builds": "^1.4.12",
     "eth-sig-util": "^3.0.1",
     "ethereumjs-util": "^5.1.1",
+    "ethers": "^5.4.6",
+    "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-ace": "^9.4.3",
     "react-dom": "^17.0.2",
@@ -20,6 +23,9 @@
     "typescript": "^4.1.2"
   },
   "scripts": {
+    "compile:contract": "truffle compile",
+    "build:types": "typechain --target=ethers-v5 --out-dir=./src/types/contracts './build/contracts/*.json'",
+    "start:ganache": "ganache-cli -m 'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about' -l 8000000 -e 1000000 -a 20 -g 0 --chainId 1337",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "deploy": "gh-pages -d build"
@@ -42,12 +48,15 @@
     ]
   },
   "devDependencies": {
+    "@typechain/ethers-v5": "^7.0.1",
     "@types/ethereumjs-util": "^5.1.1",
     "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "gh-pages": "^3.2.3",
-    "prettier": "^2.3.2"
+    "prettier": "^2.3.2",
+    "truffle": "^5.2.6",
+    "typechain": "^5.1.2"
   }
 }

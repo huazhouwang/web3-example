@@ -1,4 +1,4 @@
-import { styled } from '@material-ui/core';
+import { styled, Theme } from '@material-ui/core';
 
 const Flex = styled('div')({
   display: 'flex',
@@ -13,12 +13,15 @@ const Row = styled(Flex)({
 });
 
 const Center = styled(Flex)({
-  justifyItems: 'center',
+  justifyContent: 'center',
   alignItems: 'center',
 });
 
-const SizedBox = ({ width, height }: { width?: any; height?: any }) => (
-  <div style={{ width, height }} />
+const SizedBox = styled('div')<Theme, { width?: any; height?: any }>(
+  ({ width, height }) => ({
+    width: width,
+    height: height,
+  }),
 );
 
 export { Flex, Column, Row, Center, SizedBox };
