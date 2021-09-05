@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
-contract _Owner {
+abstract contract Ownable {
     address public owner;
     bool public enabled;
 
@@ -43,7 +43,7 @@ struct Record {
     uint donatedValue;
 }
 
-contract OpenBoard is _Owner {
+contract OpenBoard is Ownable {
     event NewRecord(Record record);
 
     uint public constant MAX_CAPACITY = 100;
@@ -70,7 +70,7 @@ contract OpenBoard is _Owner {
         emit NewRecord(records[curIndex]);
     }
 
-    function withdrawByOwner() onlyOwner public {
+    function ownerClaim() onlyOwner public {
         payable(owner).transfer(address(this).balance);
     }
 }

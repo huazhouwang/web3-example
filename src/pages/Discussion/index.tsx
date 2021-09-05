@@ -31,7 +31,7 @@ const loadHistoricalRecords = async (
 };
 
 const Discussion = () => {
-  const { account } = useActiveWeb3React();
+  const { account, chainId } = useActiveWeb3React();
   const activateInjectedWeb3 = useWeb3ReactActivate();
   const contract: OpenBoard | undefined = useOpenBoardContract();
   const [records, setRecords] = useState<Array<Record>>([]);
@@ -71,9 +71,11 @@ const Discussion = () => {
       contract.removeListener(filter, listener);
     };
   }, [contract, account]);
+  console.log(chainId);
 
   return (
     <DiscussionView
+      isWrongNetwork={chainId !== 3}
       records={records}
       account={typeof account === 'string' ? account : ''}
       connectWallet={activateInjectedWeb3}

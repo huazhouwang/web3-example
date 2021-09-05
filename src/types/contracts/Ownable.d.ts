@@ -19,7 +19,7 @@ import { Listener, Provider } from '@ethersproject/providers';
 import { FunctionFragment, EventFragment, Result } from '@ethersproject/abi';
 import { TypedEventFilter, TypedEvent, TypedListener } from './commons';
 
-interface OwnerInterface extends ethers.utils.Interface {
+interface OwnableInterface extends ethers.utils.Interface {
   functions: {
     'enabled()': FunctionFragment;
     'owner()': FunctionFragment;
@@ -49,7 +49,7 @@ interface OwnerInterface extends ethers.utils.Interface {
   events: {};
 }
 
-export class Owner extends BaseContract {
+export class Ownable extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -90,7 +90,7 @@ export class Owner extends BaseContract {
     toBlock?: string | number | undefined,
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: OwnerInterface;
+  interface: OwnableInterface;
 
   functions: {
     enabled(overrides?: CallOverrides): Promise<[boolean]>;

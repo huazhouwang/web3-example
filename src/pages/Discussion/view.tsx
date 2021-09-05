@@ -26,6 +26,7 @@ const useStyle = makeStyles((theme) => ({
     },
   },
   emptyContainer: {
+    flexDirection: 'column',
     height: '30vh',
     textAlign: 'center',
     '& > #logo': {
@@ -87,6 +88,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 export interface DiscussionViewProps {
+  isWrongNetwork: boolean;
   records: Array<Record>;
   account: string;
   messageValue: string;
@@ -96,6 +98,7 @@ export interface DiscussionViewProps {
 }
 
 const DiscussionView = ({
+  isWrongNetwork,
   records,
   account,
   messageValue,
@@ -108,9 +111,13 @@ const DiscussionView = ({
   return (
     <PagePaper>
       <Column className={classes.container}>
-        <Typography component={'h1'} variant={'h4'} align={'center'}>
-          Discussion
-        </Typography>
+        <Center>
+          <Badge badgeContent={'Dev'} color={'secondary'}>
+            <Typography component={'h1'} variant={'h4'}>
+              Discussion
+            </Typography>
+          </Badge>
+        </Center>
         <SizedBox height={32} />
 
         {records.length > 0 ? (
@@ -127,6 +134,12 @@ const DiscussionView = ({
         ) : (
           <Center className={classes.emptyContainer}>
             <Forum id={'logo'} />
+            {isWrongNetwork && (
+              <Typography variant={'body2'} color={'error'}>
+                Wrong network <br />
+                Please connect to the Ropsten Ethereum network.
+              </Typography>
+            )}
           </Center>
         )}
         <SizedBox height={8} />

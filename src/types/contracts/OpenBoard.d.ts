@@ -32,7 +32,7 @@ interface OpenBoardInterface extends ethers.utils.Interface {
     'records(uint256)': FunctionFragment;
     'submitMessage(string)': FunctionFragment;
     'donate(string)': FunctionFragment;
-    'withdrawByOwner()': FunctionFragment;
+    'ownerClaim()': FunctionFragment;
   };
 
   encodeFunctionData(
@@ -61,7 +61,7 @@ interface OpenBoardInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: 'donate', values: [string]): string;
   encodeFunctionData(
-    functionFragment: 'withdrawByOwner',
+    functionFragment: 'ownerClaim',
     values?: undefined,
   ): string;
 
@@ -90,10 +90,7 @@ interface OpenBoardInterface extends ethers.utils.Interface {
     data: BytesLike,
   ): Result;
   decodeFunctionResult(functionFragment: 'donate', data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: 'withdrawByOwner',
-    data: BytesLike,
-  ): Result;
+  decodeFunctionResult(functionFragment: 'ownerClaim', data: BytesLike): Result;
 
   events: {
     'NewRecord(tuple)': EventFragment;
@@ -190,7 +187,7 @@ export class OpenBoard extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    withdrawByOwner(
+    ownerClaim(
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
   };
@@ -239,7 +236,7 @@ export class OpenBoard extends BaseContract {
     overrides?: PayableOverrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  withdrawByOwner(
+  ownerClaim(
     overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
@@ -276,7 +273,7 @@ export class OpenBoard extends BaseContract {
 
     donate(message: string, overrides?: CallOverrides): Promise<void>;
 
-    withdrawByOwner(overrides?: CallOverrides): Promise<void>;
+    ownerClaim(overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
@@ -337,7 +334,7 @@ export class OpenBoard extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    withdrawByOwner(
+    ownerClaim(
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
   };
@@ -380,7 +377,7 @@ export class OpenBoard extends BaseContract {
       overrides?: PayableOverrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    withdrawByOwner(
+    ownerClaim(
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
   };
