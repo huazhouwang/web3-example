@@ -32,7 +32,7 @@ export const useWeb3ReactActivate = (backup: boolean = false) => {
 
       return activate(connector);
     }
-  }, [active, activate]);
+  }, [active, activate, backup]);
 };
 
 export const useEagerConnect = () => {

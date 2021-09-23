@@ -45,7 +45,7 @@ const MyAppBar = ({ onDrawerBtnClick }: { onDrawerBtnClick: VoidFunction }) => {
           <MenuIcon />
         </IconButton>
         <Typography variant={'h6'} color={'inherit'} noWrap>
-          Ethereum Utils
+          Web3 Example
         </Typography>
       </Toolbar>
     </AppBar>
