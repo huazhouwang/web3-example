@@ -1,6 +1,6 @@
 {
   "name": "web3-example",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "homepage": "https://huazhouwang.github.io/web3-example/",
   "dependencies": {
