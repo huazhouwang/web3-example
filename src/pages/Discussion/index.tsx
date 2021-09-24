@@ -71,7 +71,6 @@ const Discussion = () => {
       contract.removeListener(filter, listener);
     };
   }, [contract, account]);
-  console.log(chainId);
 
   return (
     <DiscussionView
