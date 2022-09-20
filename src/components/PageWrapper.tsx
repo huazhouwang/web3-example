@@ -1,14 +1,19 @@
+import React, { useState } from 'react';
 import {
   AppBar,
-  CssBaseline,
   IconButton,
   makeStyles,
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import React, { useState } from 'react';
 import MenuIcon from '@material-ui/icons/Menu';
-import PagesDrawer from './components/PagesDrawer';
+import PagesDrawer from './PagesDrawer';
+import {
+  useLocation,
+  useNavigate,
+  useNavigation,
+  useRoutes,
+} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -21,14 +26,6 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
   },
 }));
-
-const Pagers: { [key: string]: React.FC } = {
-  Message: () => require('./pages/Message/index').default,
-  Transaction: () => require('./pages/Transaction/index').default,
-  Discussion: () => require('./pages/Discussion/index').default,
-};
-const DRAWER_MENU = Object.keys(Pagers);
-const DEFAULT_PAGE = DRAWER_MENU[0];
 
 const MyAppBar = ({ onDrawerBtnClick }: { onDrawerBtnClick: VoidFunction }) => {
   const classes = useStyles();
@@ -52,31 +49,30 @@ const MyAppBar = ({ onDrawerBtnClick }: { onDrawerBtnClick: VoidFunction }) => {
   );
 };
 
-const App = () => {
+const PageWrapper: React.FC<React.PropsWithChildren<unknown>> = ({
+  children,
+}) => {
   const classes = useStyles();
   const [isDrawerOpening, setIsDrawerOpening] = useState<boolean>(false);
-  const [Page, setPage] = useState<React.FC>(Pagers[DEFAULT_PAGE]);
+  const navigate = useNavigate();
 
   return (
     <>
-      <CssBaseline />
       <MyAppBar
         onDrawerBtnClick={() => setIsDrawerOpening((prevState) => !prevState)}
       />
       <PagesDrawer
-        menus={DRAWER_MENU}
+        menus={['Message', 'Transaction', 'Discussion']}
         open={isDrawerOpening}
         onClose={() => setIsDrawerOpening(() => false)}
         onDrawerItemClick={(text) => {
-          setPage((Pagers as any)[text]);
+          navigate(`/${text.toLowerCase()}`);
           setIsDrawerOpening(false);
         }}
       />
-      <main className={classes.main}>
-        <Page />
-      </main>
+      <main className={classes.main}>{children}</main>
     </>
   );
 };
 
-export default App;
+export default PageWrapper;
