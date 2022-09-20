@@ -8,12 +8,7 @@ import {
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import PagesDrawer from './PagesDrawer';
-import {
-  useLocation,
-  useNavigate,
-  useNavigation,
-  useRoutes,
-} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
