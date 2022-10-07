@@ -8,35 +8,40 @@ import Discussion from './pages/Discussion';
 import { CssBaseline } from '@material-ui/core';
 import PageWrapper from './components/PageWrapper';
 
-const router = createBrowserRouter(
-  [
-    {
-      path: '/message',
-      element: (
-        <PageWrapper>
-          <Message />
-        </PageWrapper>
-      ),
-    },
-    {
-      path: '/transaction',
-      element: (
-        <PageWrapper>
-          <Transaction />
-        </PageWrapper>
-      ),
-    },
-    {
-      path: '/discussion',
-      element: (
-        <PageWrapper>
-          <Discussion />
-        </PageWrapper>
-      ),
-    },
-  ],
-  { basename: 'web3-example' },
-);
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: (
+      <PageWrapper>
+        <Message />
+      </PageWrapper>
+    ),
+  },
+  {
+    path: '/message',
+    element: (
+      <PageWrapper>
+        <Message />
+      </PageWrapper>
+    ),
+  },
+  {
+    path: '/transaction',
+    element: (
+      <PageWrapper>
+        <Transaction />
+      </PageWrapper>
+    ),
+  },
+  {
+    path: '/discussion',
+    element: (
+      <PageWrapper>
+        <Discussion />
+      </PageWrapper>
+    ),
+  },
+]);
 
 ReactDOM.render(
   <React.StrictMode>
